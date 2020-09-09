@@ -1,0 +1,4157 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.3
+-- Dumped by pg_dump version 10.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.ar_internal_metadata OWNER TO gustavogalarreta;
+
+--
+-- Name: background_colors; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.background_colors (
+    id bigint NOT NULL,
+    hexadecimal_color character varying,
+    description character varying,
+    smart_tv_sponsor_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.background_colors OWNER TO gustavogalarreta;
+
+--
+-- Name: background_colors_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.background_colors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.background_colors_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: background_colors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.background_colors_id_seq OWNED BY public.background_colors.id;
+
+
+--
+-- Name: brands; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.brands (
+    id bigint NOT NULL,
+    name character varying,
+    description character varying,
+    corporation_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.brands OWNER TO gustavogalarreta;
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.brands_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.brands_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.brands_id_seq OWNED BY public.brands.id;
+
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    initial_date date,
+    final_date date,
+    name character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.events OWNER TO gustavogalarreta;
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.events_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
+-- Name: favorite_products; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.favorite_products (
+    id bigint NOT NULL,
+    user_id bigint,
+    product_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.favorite_products OWNER TO gustavogalarreta;
+
+--
+-- Name: favorite_products_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.favorite_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.favorite_products_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: favorite_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.favorite_products_id_seq OWNED BY public.favorite_products.id;
+
+
+--
+-- Name: favorite_stores; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.favorite_stores (
+    id bigint NOT NULL,
+    user_id bigint,
+    store_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.favorite_stores OWNER TO gustavogalarreta;
+
+--
+-- Name: favorite_stores_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.favorite_stores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.favorite_stores_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: favorite_stores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.favorite_stores_id_seq OWNED BY public.favorite_stores.id;
+
+
+--
+-- Name: incidents; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.incidents (
+    id bigint NOT NULL,
+    type character varying,
+    information text,
+    state text,
+    location point,
+    map_id bigint,
+    mall_level_id bigint,
+    mall_element_id bigint,
+    user_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.incidents OWNER TO gustavogalarreta;
+
+--
+-- Name: incidents_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.incidents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.incidents_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: incidents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.incidents_id_seq OWNED BY public.incidents.id;
+
+
+--
+-- Name: mall_beacons; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_beacons (
+    id bigint NOT NULL,
+    map_id bigint,
+    mall_level_id bigint,
+    description text,
+    uuid character varying,
+    major character varying,
+    minor character varying,
+    rssi_per_meter integer,
+    power integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_beacons OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_beacons_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_beacons_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_beacons_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_beacons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_beacons_id_seq OWNED BY public.mall_beacons.id;
+
+
+--
+-- Name: mall_elements; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_elements (
+    id bigint NOT NULL,
+    mall_level_id bigint,
+    store_id bigint,
+    map_id bigint,
+    type character varying,
+    access_points point[] DEFAULT '{}'::point[],
+    limit_points point[] DEFAULT '{}'::point[],
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_elements OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elements_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_elements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_elements_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_elements_id_seq OWNED BY public.mall_elements.id;
+
+
+--
+-- Name: mall_elevation_paths; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_elevation_paths (
+    id bigint NOT NULL,
+    mall_elevation_id_first integer,
+    mall_elevation_id_second integer,
+    map_id bigint,
+    direction character varying,
+    weight integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_elevation_paths OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elevation_paths_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_elevation_paths_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_elevation_paths_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elevation_paths_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_elevation_paths_id_seq OWNED BY public.mall_elevation_paths.id;
+
+
+--
+-- Name: mall_elevations; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_elevations (
+    id bigint NOT NULL,
+    map_id bigint,
+    mall_level_id bigint,
+    mall_node_id bigint,
+    name character varying,
+    type character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_elevations OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elevations_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_elevations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_elevations_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_elevations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_elevations_id_seq OWNED BY public.mall_elevations.id;
+
+
+--
+-- Name: mall_levels; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_levels (
+    id bigint NOT NULL,
+    map_id bigint,
+    title character varying,
+    image text,
+    angle double precision,
+    opacity double precision,
+    level integer,
+    location point,
+    projection_size point,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_levels OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_levels_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_levels_id_seq OWNED BY public.mall_levels.id;
+
+
+--
+-- Name: mall_node_paths; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_node_paths (
+    id bigint NOT NULL,
+    mall_node_id_first integer,
+    mall_node_id_second integer,
+    map_id bigint,
+    weight integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_node_paths OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_node_paths_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_node_paths_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_node_paths_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_node_paths_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_node_paths_id_seq OWNED BY public.mall_node_paths.id;
+
+
+--
+-- Name: mall_nodes; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.mall_nodes (
+    id bigint NOT NULL,
+    map_id bigint,
+    mall_level_id bigint,
+    location point,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.mall_nodes OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_nodes_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.mall_nodes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.mall_nodes_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: mall_nodes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.mall_nodes_id_seq OWNED BY public.mall_nodes.id;
+
+
+--
+-- Name: map_labels; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.map_labels (
+    id bigint NOT NULL,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    description text,
+    x_coord double precision,
+    y_coord double precision,
+    image character varying
+);
+
+
+ALTER TABLE public.map_labels OWNER TO gustavogalarreta;
+
+--
+-- Name: map_labels_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.map_labels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.map_labels_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: map_labels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.map_labels_id_seq OWNED BY public.map_labels.id;
+
+
+--
+-- Name: maps; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.maps (
+    id bigint NOT NULL,
+    description text,
+    image text,
+    state character varying,
+    title character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.maps OWNER TO gustavogalarreta;
+
+--
+-- Name: maps_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.maps_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.maps_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: maps_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.maps_id_seq OWNED BY public.maps.id;
+
+
+--
+-- Name: park_zone_reservations; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.park_zone_reservations (
+    id bigint NOT NULL,
+    park_zone_id bigint,
+    user_id bigint,
+    start_time date,
+    end_time date,
+    state integer
+);
+
+
+ALTER TABLE public.park_zone_reservations OWNER TO gustavogalarreta;
+
+--
+-- Name: park_zone_reservations_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.park_zone_reservations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.park_zone_reservations_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: park_zone_reservations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.park_zone_reservations_id_seq OWNED BY public.park_zone_reservations.id;
+
+
+--
+-- Name: park_zones; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.park_zones (
+    id bigint NOT NULL,
+    description text,
+    x_coord double precision,
+    y_coord double precision,
+    height double precision,
+    width double precision,
+    image_file_name character varying,
+    image_content_type character varying,
+    image_file_size integer,
+    image_updated_at timestamp without time zone,
+    parking_level_id bigint
+);
+
+
+ALTER TABLE public.park_zones OWNER TO gustavogalarreta;
+
+--
+-- Name: park_zones_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.park_zones_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.park_zones_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: park_zones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.park_zones_id_seq OWNED BY public.park_zones.id;
+
+
+--
+-- Name: parking_levels; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.parking_levels (
+    id bigint NOT NULL,
+    parking_lot_id bigint,
+    level_order integer,
+    name character varying,
+    image_file_name character varying,
+    image_content_type character varying,
+    image_file_size integer,
+    image_updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.parking_levels OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_levels_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.parking_levels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_levels_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_levels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.parking_levels_id_seq OWNED BY public.parking_levels.id;
+
+
+--
+-- Name: parking_lots; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.parking_lots (
+    id bigint NOT NULL,
+    description text,
+    name character varying,
+    n_levels integer,
+    image_file_name character varying,
+    image_content_type character varying,
+    image_file_size integer,
+    image_updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.parking_lots OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_lots_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.parking_lots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_lots_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_lots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.parking_lots_id_seq OWNED BY public.parking_lots.id;
+
+
+--
+-- Name: parking_place_updates_sessions; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.parking_place_updates_sessions (
+    id bigint NOT NULL,
+    session_id bigint,
+    user_id bigint,
+    parking_place_id bigint,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    new_state integer
+);
+
+
+ALTER TABLE public.parking_place_updates_sessions OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_place_updates_sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.parking_place_updates_sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_place_updates_sessions_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_place_updates_sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.parking_place_updates_sessions_id_seq OWNED BY public.parking_place_updates_sessions.id;
+
+
+--
+-- Name: parking_places; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.parking_places (
+    id bigint NOT NULL,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    x_coord double precision,
+    y_coord double precision,
+    state integer,
+    sensor_id integer,
+    angle double precision
+);
+
+
+ALTER TABLE public.parking_places OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_places_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.parking_places_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_places_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_places_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.parking_places_id_seq OWNED BY public.parking_places.id;
+
+
+--
+-- Name: parking_places_road_dots; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.parking_places_road_dots (
+    id bigint NOT NULL,
+    parking_place_id bigint,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    road_dot_from_id bigint,
+    road_dot_to_id bigint,
+    road_dot_connection_id bigint
+);
+
+
+ALTER TABLE public.parking_places_road_dots OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_places_road_dots_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.parking_places_road_dots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_places_road_dots_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: parking_places_road_dots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.parking_places_road_dots_id_seq OWNED BY public.parking_places_road_dots.id;
+
+
+--
+-- Name: preference_store_categories; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.preference_store_categories (
+    id bigint NOT NULL,
+    user_id bigint,
+    store_category_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.preference_store_categories OWNER TO gustavogalarreta;
+
+--
+-- Name: preference_store_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.preference_store_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.preference_store_categories_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: preference_store_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.preference_store_categories_id_seq OWNED BY public.preference_store_categories.id;
+
+
+--
+-- Name: price_units; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.price_units (
+    id bigint NOT NULL,
+    value character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.price_units OWNER TO gustavogalarreta;
+
+--
+-- Name: price_units_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.price_units_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.price_units_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: price_units_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.price_units_id_seq OWNED BY public.price_units.id;
+
+
+--
+-- Name: product_categories; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.product_categories (
+    id bigint NOT NULL,
+    name character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.product_categories OWNER TO gustavogalarreta;
+
+--
+-- Name: product_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.product_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_categories_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: product_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.product_categories_id_seq OWNED BY public.product_categories.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.products (
+    id bigint NOT NULL,
+    name character varying,
+    brand_id bigint,
+    product_category_id bigint,
+    store_id bigint,
+    promotion_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    image_file_name character varying,
+    image_content_type character varying,
+    image_file_size integer,
+    image_updated_at timestamp without time zone,
+    price character varying
+);
+
+
+ALTER TABLE public.products OWNER TO gustavogalarreta;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: promotions; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.promotions (
+    id bigint NOT NULL,
+    initial_date date,
+    final_date date,
+    value character varying,
+    only_mobile boolean,
+    store_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.promotions OWNER TO gustavogalarreta;
+
+--
+-- Name: promotions_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.promotions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.promotions_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: promotions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.promotions_id_seq OWNED BY public.promotions.id;
+
+
+--
+-- Name: road_dot_connections; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.road_dot_connections (
+    id bigint NOT NULL,
+    road_dot_from_id bigint,
+    road_dot_to_id bigint
+);
+
+
+ALTER TABLE public.road_dot_connections OWNER TO gustavogalarreta;
+
+--
+-- Name: road_dot_connections_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.road_dot_connections_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.road_dot_connections_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: road_dot_connections_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.road_dot_connections_id_seq OWNED BY public.road_dot_connections.id;
+
+
+--
+-- Name: road_dots; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.road_dots (
+    id bigint NOT NULL,
+    x_coord double precision,
+    y_coord double precision,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    type integer
+);
+
+
+ALTER TABLE public.road_dots OWNER TO gustavogalarreta;
+
+--
+-- Name: road_dots_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.road_dots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.road_dots_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: road_dots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.road_dots_id_seq OWNED BY public.road_dots.id;
+
+
+--
+-- Name: roads; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.roads (
+    id bigint NOT NULL,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    x_start integer,
+    y_start integer,
+    x_end integer,
+    y_end integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.roads OWNER TO gustavogalarreta;
+
+--
+-- Name: roads_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.roads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roads_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: roads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.roads_id_seq OWNED BY public.roads.id;
+
+
+--
+-- Name: roulettes; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.roulettes (
+    id bigint NOT NULL,
+    user_id bigint,
+    smart_tv_sponsor_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.roulettes OWNER TO gustavogalarreta;
+
+--
+-- Name: roulettes_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.roulettes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.roulettes_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: roulettes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.roulettes_id_seq OWNED BY public.roulettes.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO gustavogalarreta;
+
+--
+-- Name: sensor_maintenances; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.sensor_maintenances (
+    id bigint NOT NULL,
+    parking_place_id bigint,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    maintenance_date date,
+    description text,
+    recording_user integer
+);
+
+
+ALTER TABLE public.sensor_maintenances OWNER TO gustavogalarreta;
+
+--
+-- Name: sensor_maintenances_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.sensor_maintenances_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sensor_maintenances_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: sensor_maintenances_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.sensor_maintenances_id_seq OWNED BY public.sensor_maintenances.id;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.sessions (
+    id bigint NOT NULL,
+    access_token character varying NOT NULL,
+    user_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.sessions OWNER TO gustavogalarreta;
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sessions_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
+
+
+--
+-- Name: smart_tv_sponsors; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.smart_tv_sponsors (
+    id bigint NOT NULL,
+    video_url character varying,
+    image_frame_file_name character varying,
+    image_frame_content_type character varying,
+    image_frame_file_size integer,
+    image_frame_updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.smart_tv_sponsors OWNER TO gustavogalarreta;
+
+--
+-- Name: smart_tv_sponsors_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.smart_tv_sponsors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.smart_tv_sponsors_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: smart_tv_sponsors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.smart_tv_sponsors_id_seq OWNED BY public.smart_tv_sponsors.id;
+
+
+--
+-- Name: smart_tv_users; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.smart_tv_users (
+    id bigint NOT NULL,
+    user_tv integer,
+    password_tv character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.smart_tv_users OWNER TO gustavogalarreta;
+
+--
+-- Name: smart_tv_users_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.smart_tv_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.smart_tv_users_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: smart_tv_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.smart_tv_users_id_seq OWNED BY public.smart_tv_users.id;
+
+
+--
+-- Name: sponsor_stores; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.sponsor_stores (
+    id bigint NOT NULL,
+    store_id bigint,
+    smart_tv_sponsor_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.sponsor_stores OWNER TO gustavogalarreta;
+
+--
+-- Name: sponsor_stores_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.sponsor_stores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sponsor_stores_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: sponsor_stores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.sponsor_stores_id_seq OWNED BY public.sponsor_stores.id;
+
+
+--
+-- Name: store_categories; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.store_categories (
+    id bigint NOT NULL,
+    name character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    icon_file_name character varying,
+    icon_content_type character varying,
+    icon_file_size integer,
+    icon_updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.store_categories OWNER TO gustavogalarreta;
+
+--
+-- Name: store_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.store_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_categories_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: store_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.store_categories_id_seq OWNED BY public.store_categories.id;
+
+
+--
+-- Name: store_events; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.store_events (
+    id bigint NOT NULL,
+    store_id bigint,
+    event_id bigint,
+    banner_file_name character varying,
+    banner_content_type character varying,
+    banner_file_size integer,
+    banner_updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.store_events OWNER TO gustavogalarreta;
+
+--
+-- Name: store_events_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.store_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_events_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: store_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.store_events_id_seq OWNED BY public.store_events.id;
+
+
+--
+-- Name: store_store_categories; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.store_store_categories (
+    id bigint NOT NULL,
+    store_id bigint,
+    store_category_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.store_store_categories OWNER TO gustavogalarreta;
+
+--
+-- Name: store_store_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.store_store_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.store_store_categories_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: store_store_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.store_store_categories_id_seq OWNED BY public.store_store_categories.id;
+
+
+--
+-- Name: stores; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.stores (
+    id bigint NOT NULL,
+    name character varying,
+    description character varying,
+    webpage character varying,
+    contact_name character varying,
+    phone_number character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    logo_file_name character varying,
+    logo_content_type character varying,
+    logo_file_size integer,
+    logo_updated_at timestamp without time zone,
+    banner_file_name character varying,
+    banner_content_type character varying,
+    banner_file_size integer,
+    banner_updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.stores OWNER TO gustavogalarreta;
+
+--
+-- Name: stores_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.stores_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.stores_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: stores_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.stores_id_seq OWNED BY public.stores.id;
+
+
+--
+-- Name: technical_specifications; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.technical_specifications (
+    id bigint NOT NULL,
+    description character varying,
+    weight character varying,
+    length character varying,
+    height character varying,
+    brand character varying,
+    product_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.technical_specifications OWNER TO gustavogalarreta;
+
+--
+-- Name: technical_specifications_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.technical_specifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.technical_specifications_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: technical_specifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.technical_specifications_id_seq OWNED BY public.technical_specifications.id;
+
+
+--
+-- Name: user_places; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.user_places (
+    id bigint NOT NULL,
+    user_id bigint,
+    parking_place_id bigint,
+    parking_level_id bigint,
+    parking_lot_id bigint,
+    start_time date
+);
+
+
+ALTER TABLE public.user_places OWNER TO gustavogalarreta;
+
+--
+-- Name: user_places_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.user_places_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_places_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: user_places_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.user_places_id_seq OWNED BY public.user_places.id;
+
+
+--
+-- Name: user_sponsors; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.user_sponsors (
+    id bigint NOT NULL,
+    smart_tv_user_id bigint,
+    smart_tv_sponsor_id bigint,
+    event_date date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.user_sponsors OWNER TO gustavogalarreta;
+
+--
+-- Name: user_sponsors_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.user_sponsors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_sponsors_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: user_sponsors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.user_sponsors_id_seq OWNED BY public.user_sponsors.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    first_name character varying,
+    last_name character varying,
+    date_of_birth date,
+    phone_number character varying,
+    avatar_file_name character varying,
+    avatar_content_type character varying,
+    avatar_file_size integer,
+    avatar_updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO gustavogalarreta;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE SEQUENCE public.users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO gustavogalarreta;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: background_colors id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.background_colors ALTER COLUMN id SET DEFAULT nextval('public.background_colors_id_seq'::regclass);
+
+
+--
+-- Name: brands id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.brands ALTER COLUMN id SET DEFAULT nextval('public.brands_id_seq'::regclass);
+
+
+--
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
+-- Name: favorite_products id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.favorite_products ALTER COLUMN id SET DEFAULT nextval('public.favorite_products_id_seq'::regclass);
+
+
+--
+-- Name: favorite_stores id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.favorite_stores ALTER COLUMN id SET DEFAULT nextval('public.favorite_stores_id_seq'::regclass);
+
+
+--
+-- Name: incidents id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents ALTER COLUMN id SET DEFAULT nextval('public.incidents_id_seq'::regclass);
+
+
+--
+-- Name: mall_beacons id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_beacons ALTER COLUMN id SET DEFAULT nextval('public.mall_beacons_id_seq'::regclass);
+
+
+--
+-- Name: mall_elements id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elements ALTER COLUMN id SET DEFAULT nextval('public.mall_elements_id_seq'::regclass);
+
+
+--
+-- Name: mall_elevation_paths id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevation_paths ALTER COLUMN id SET DEFAULT nextval('public.mall_elevation_paths_id_seq'::regclass);
+
+
+--
+-- Name: mall_elevations id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevations ALTER COLUMN id SET DEFAULT nextval('public.mall_elevations_id_seq'::regclass);
+
+
+--
+-- Name: mall_levels id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_levels ALTER COLUMN id SET DEFAULT nextval('public.mall_levels_id_seq'::regclass);
+
+
+--
+-- Name: mall_node_paths id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_node_paths ALTER COLUMN id SET DEFAULT nextval('public.mall_node_paths_id_seq'::regclass);
+
+
+--
+-- Name: mall_nodes id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_nodes ALTER COLUMN id SET DEFAULT nextval('public.mall_nodes_id_seq'::regclass);
+
+
+--
+-- Name: map_labels id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.map_labels ALTER COLUMN id SET DEFAULT nextval('public.map_labels_id_seq'::regclass);
+
+
+--
+-- Name: maps id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.maps ALTER COLUMN id SET DEFAULT nextval('public.maps_id_seq'::regclass);
+
+
+--
+-- Name: park_zone_reservations id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zone_reservations ALTER COLUMN id SET DEFAULT nextval('public.park_zone_reservations_id_seq'::regclass);
+
+
+--
+-- Name: park_zones id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zones ALTER COLUMN id SET DEFAULT nextval('public.park_zones_id_seq'::regclass);
+
+
+--
+-- Name: parking_levels id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_levels ALTER COLUMN id SET DEFAULT nextval('public.parking_levels_id_seq'::regclass);
+
+
+--
+-- Name: parking_lots id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_lots ALTER COLUMN id SET DEFAULT nextval('public.parking_lots_id_seq'::regclass);
+
+
+--
+-- Name: parking_place_updates_sessions id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions ALTER COLUMN id SET DEFAULT nextval('public.parking_place_updates_sessions_id_seq'::regclass);
+
+
+--
+-- Name: parking_places id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places ALTER COLUMN id SET DEFAULT nextval('public.parking_places_id_seq'::regclass);
+
+
+--
+-- Name: parking_places_road_dots id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots ALTER COLUMN id SET DEFAULT nextval('public.parking_places_road_dots_id_seq'::regclass);
+
+
+--
+-- Name: preference_store_categories id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.preference_store_categories ALTER COLUMN id SET DEFAULT nextval('public.preference_store_categories_id_seq'::regclass);
+
+
+--
+-- Name: price_units id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.price_units ALTER COLUMN id SET DEFAULT nextval('public.price_units_id_seq'::regclass);
+
+
+--
+-- Name: product_categories id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.product_categories ALTER COLUMN id SET DEFAULT nextval('public.product_categories_id_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: promotions id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.promotions ALTER COLUMN id SET DEFAULT nextval('public.promotions_id_seq'::regclass);
+
+
+--
+-- Name: road_dot_connections id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dot_connections ALTER COLUMN id SET DEFAULT nextval('public.road_dot_connections_id_seq'::regclass);
+
+
+--
+-- Name: road_dots id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dots ALTER COLUMN id SET DEFAULT nextval('public.road_dots_id_seq'::regclass);
+
+
+--
+-- Name: roads id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.roads ALTER COLUMN id SET DEFAULT nextval('public.roads_id_seq'::regclass);
+
+
+--
+-- Name: roulettes id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.roulettes ALTER COLUMN id SET DEFAULT nextval('public.roulettes_id_seq'::regclass);
+
+
+--
+-- Name: sensor_maintenances id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sensor_maintenances ALTER COLUMN id SET DEFAULT nextval('public.sensor_maintenances_id_seq'::regclass);
+
+
+--
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+
+
+--
+-- Name: smart_tv_sponsors id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.smart_tv_sponsors ALTER COLUMN id SET DEFAULT nextval('public.smart_tv_sponsors_id_seq'::regclass);
+
+
+--
+-- Name: smart_tv_users id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.smart_tv_users ALTER COLUMN id SET DEFAULT nextval('public.smart_tv_users_id_seq'::regclass);
+
+
+--
+-- Name: sponsor_stores id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sponsor_stores ALTER COLUMN id SET DEFAULT nextval('public.sponsor_stores_id_seq'::regclass);
+
+
+--
+-- Name: store_categories id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_categories ALTER COLUMN id SET DEFAULT nextval('public.store_categories_id_seq'::regclass);
+
+
+--
+-- Name: store_events id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_events ALTER COLUMN id SET DEFAULT nextval('public.store_events_id_seq'::regclass);
+
+
+--
+-- Name: store_store_categories id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_store_categories ALTER COLUMN id SET DEFAULT nextval('public.store_store_categories_id_seq'::regclass);
+
+
+--
+-- Name: stores id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.stores ALTER COLUMN id SET DEFAULT nextval('public.stores_id_seq'::regclass);
+
+
+--
+-- Name: technical_specifications id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.technical_specifications ALTER COLUMN id SET DEFAULT nextval('public.technical_specifications_id_seq'::regclass);
+
+
+--
+-- Name: user_places id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places ALTER COLUMN id SET DEFAULT nextval('public.user_places_id_seq'::regclass);
+
+
+--
+-- Name: user_sponsors id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_sponsors ALTER COLUMN id SET DEFAULT nextval('public.user_sponsors_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	development	2018-04-16 18:16:32.32738	2018-04-16 18:16:32.32738
+\.
+
+
+--
+-- Data for Name: background_colors; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.background_colors (id, hexadecimal_color, description, smart_tv_sponsor_id, created_at, updated_at) FROM stdin;
+1	#ff0000	test	2	2018-05-27 20:02:52.550134	2018-05-27 20:02:52.550134
+2	#ff0000	test	3	2018-05-27 22:01:04.915399	2018-05-27 22:01:04.915399
+3	#ff0000	test	4	2018-05-27 22:02:30.217946	2018-05-27 22:02:30.217946
+4	#ff0000	test	5	2018-05-27 22:03:35.55952	2018-05-27 22:03:35.55952
+5	#ff0000	test	6	2018-05-27 22:03:47.910487	2018-05-27 22:03:47.910487
+6	#ff0000	test	7	2018-05-27 22:08:14.065533	2018-05-27 22:08:14.065533
+7	#ff0000	test	8	2018-05-27 22:09:19.720921	2018-05-27 22:09:19.720921
+\.
+
+
+--
+-- Data for Name: brands; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.brands (id, name, description, corporation_name, created_at, updated_at) FROM stdin;
+1	Test	test	test	2018-05-16 17:46:06.061641	2018-05-16 17:46:06.061641
+2	brand 1	description 1	corporation 1	2018-05-16 20:40:18.40789	2018-05-16 20:40:18.40789
+\.
+
+
+--
+-- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.events (id, initial_date, final_date, name, description, created_at, updated_at) FROM stdin;
+2	2018-05-01	2018-05-14	Dia de la madre	Un dia para ..	2018-05-21 15:21:57.373785	2018-05-21 15:21:57.373785
+3	2018-05-01	2018-05-14	Dia de la madre	Un dia para ..	2018-05-21 18:02:44.796503	2018-05-21 18:02:44.796503
+\.
+
+
+--
+-- Data for Name: favorite_products; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.favorite_products (id, user_id, product_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: favorite_stores; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.favorite_stores (id, user_id, store_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: incidents; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.incidents (id, type, information, state, location, map_id, mall_level_id, mall_element_id, user_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_beacons; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_beacons (id, map_id, mall_level_id, description, uuid, major, minor, rssi_per_meter, power, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_elements; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_elements (id, mall_level_id, store_id, map_id, type, access_points, limit_points, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_elevation_paths; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_elevation_paths (id, mall_elevation_id_first, mall_elevation_id_second, map_id, direction, weight, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_elevations; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_elevations (id, map_id, mall_level_id, mall_node_id, name, type, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_levels; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_levels (id, map_id, title, image, angle, opacity, level, location, projection_size, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_node_paths; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_node_paths (id, mall_node_id_first, mall_node_id_second, map_id, weight, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: mall_nodes; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.mall_nodes (id, map_id, mall_level_id, location, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: map_labels; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.map_labels (id, parking_level_id, parking_lot_id, description, x_coord, y_coord, image) FROM stdin;
+\.
+
+
+--
+-- Data for Name: maps; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.maps (id, description, image, state, title, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: park_zone_reservations; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.park_zone_reservations (id, park_zone_id, user_id, start_time, end_time, state) FROM stdin;
+\.
+
+
+--
+-- Data for Name: park_zones; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.park_zones (id, description, x_coord, y_coord, height, width, image_file_name, image_content_type, image_file_size, image_updated_at, parking_level_id) FROM stdin;
+1	\N	\N	\N	\N	\N	image.jpg	image/jpeg	189425	2018-05-28 15:53:53.912291	\N
+\.
+
+
+--
+-- Data for Name: parking_levels; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.parking_levels (id, parking_lot_id, level_order, name, image_file_name, image_content_type, image_file_size, image_updated_at) FROM stdin;
+1	2	\N	\N	image.jpg	image/jpeg	189425	2018-05-28 15:28:17.783577
+\.
+
+
+--
+-- Data for Name: parking_lots; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.parking_lots (id, description, name, n_levels, image_file_name, image_content_type, image_file_size, image_updated_at) FROM stdin;
+1	\N	Test	\N	\N	\N	\N	\N
+2	\N	\N	\N	image.jpg	image/jpeg	189425	2018-05-28 16:00:43.955638
+\.
+
+
+--
+-- Data for Name: parking_place_updates_sessions; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.parking_place_updates_sessions (id, session_id, user_id, parking_place_id, parking_level_id, parking_lot_id, new_state) FROM stdin;
+\.
+
+
+--
+-- Data for Name: parking_places; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.parking_places (id, parking_level_id, parking_lot_id, x_coord, y_coord, state, sensor_id, angle) FROM stdin;
+\.
+
+
+--
+-- Data for Name: parking_places_road_dots; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.parking_places_road_dots (id, parking_place_id, parking_level_id, parking_lot_id, road_dot_from_id, road_dot_to_id, road_dot_connection_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: preference_store_categories; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.preference_store_categories (id, user_id, store_category_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: price_units; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.price_units (id, value, description, created_at, updated_at) FROM stdin;
+1	3,14	Dolar	2018-05-16 21:51:52.669338	2018-05-16 21:51:52.669338
+2	5,14	Euro	2018-05-16 21:52:02.807181	2018-05-16 21:52:02.807181
+\.
+
+
+--
+-- Data for Name: product_categories; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.product_categories (id, name, description, created_at, updated_at) FROM stdin;
+1	Test	test	2018-05-16 20:40:10.39433	2018-05-16 20:40:10.39433
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.products (id, name, brand_id, product_category_id, store_id, promotion_id, created_at, updated_at, image_file_name, image_content_type, image_file_size, image_updated_at, price) FROM stdin;
+1	test Modificado	1	1	9	1	2018-05-18 02:48:22.823938	2018-05-18 02:48:22.823938	\N	\N	\N	\N	12,3
+2	test Modificado	1	1	9	1	2018-05-18 02:50:15.353899	2018-05-18 02:50:15.353899	\N	\N	\N	\N	12,3
+3	test Modificado	1	1	9	1	2018-05-18 02:51:28.496414	2018-05-22 20:20:59.106358	\N	\N	\N	\N	20
+\.
+
+
+--
+-- Data for Name: promotions; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.promotions (id, initial_date, final_date, value, only_mobile, store_id, created_at, updated_at) FROM stdin;
+1	2018-01-01	2018-01-01	20	t	12	2018-05-18 02:47:58.913014	2018-05-18 02:47:58.913014
+2	2018-01-01	2018-01-01	20	t	12	2018-05-18 02:50:22.700851	2018-05-18 02:50:22.700851
+3	2018-01-01	2018-01-01	20	t	12	2018-05-18 02:51:26.038139	2018-05-18 02:51:26.038139
+\.
+
+
+--
+-- Data for Name: road_dot_connections; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.road_dot_connections (id, road_dot_from_id, road_dot_to_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: road_dots; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.road_dots (id, x_coord, y_coord, parking_level_id, parking_lot_id, type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: roads; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.roads (id, parking_level_id, parking_lot_id, x_start, y_start, x_end, y_end, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: roulettes; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.roulettes (id, user_id, smart_tv_sponsor_id, created_at, updated_at) FROM stdin;
+1	1	2	2018-05-27 21:33:57.136476	2018-05-27 21:33:57.136476
+\.
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.schema_migrations (version) FROM stdin;
+20180416181541
+20180416183252
+20180416213954
+20180416214224
+20180416214416
+20180420015917
+20180420211752
+20180420215033
+20180426052122
+20180420140139
+20180420153136
+20180422063807
+20180422063924
+20180422064330
+20180425002431
+20180425002908
+201807152256255
+201807152256256
+201807152256258
+201807152256259
+201807152256260
+20180515205508
+20180515220324
+201807152256261
+201807152256262
+201807152256257
+2018071522562551
+20180515225620
+201807152256263
+20180515151057
+20180515230099
+20180515230100
+20180516000549
+20180715225618
+20180715225620
+20180715225621
+20180715225622
+20180715225623
+20180715225624
+20180715225625
+20180715225626
+20180715225627
+20180715225628
+20180715225629
+20180715225630
+20180715225631
+20180715225632
+201807152256232
+201807152256239
+201807152256240
+201807152256241
+201807152256242
+201807152256243
+201807152256244
+201807152256245
+201807152256246
+201807152256247
+201807152256248
+201807152256249
+201807152256250
+201807152256251
+201807152256252
+201807152256253
+\.
+
+
+--
+-- Data for Name: sensor_maintenances; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.sensor_maintenances (id, parking_place_id, parking_level_id, parking_lot_id, maintenance_date, description, recording_user) FROM stdin;
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.sessions (id, access_token, user_id, created_at, updated_at) FROM stdin;
+2	1igf8lh-5cuDaDgU0UfaJmopeD1e98AgL6XS1b14Q2Q	1	2018-04-16 18:45:09.598582	2018-04-16 18:45:09.598582
+3	Vqe-glLzgS5RYcTwzrMgxCwtGwE5e6a0qOXAxnz_EHA	1	2018-04-16 18:47:03.709545	2018-04-16 18:47:03.709545
+4	9eAlt7jdvOySHehxwO6wx8uBySQ5GRFpDn_FfdLE2p8	1	2018-04-16 19:11:33.354839	2018-04-16 19:11:33.354839
+5	VpSccwlTFIjkz1GfkT0nzzW1wGm1FPHJ2WFf227aORk	1	2018-04-16 19:15:04.143451	2018-04-16 19:15:04.143451
+6	J3-N8z-jn-buKZWl044bzqz8AaNsZGp11omZ2R7XWuA	1	2018-04-16 19:15:51.530906	2018-04-16 19:15:51.530906
+7	3HGjcMRxB5PHuBtNLJtKxetI0lg4oEch3y86JeVr_CU	1	2018-04-16 23:30:20.525103	2018-04-16 23:30:20.525103
+8	JV6KfoNSbSY2E69Sa3OHgdLQS3c6KKm6okiPQI1Cdyg	2	2018-05-18 16:26:54.756493	2018-05-18 16:26:54.756493
+\.
+
+
+--
+-- Data for Name: smart_tv_sponsors; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.smart_tv_sponsors (id, video_url, image_frame_file_name, image_frame_content_type, image_frame_file_size, image_frame_updated_at, created_at, updated_at) FROM stdin;
+2	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 20:02:52.537588	2018-05-27 20:02:52.537588
+3	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:01:04.906423	2018-05-27 22:01:04.906423
+4	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:02:30.215876	2018-05-27 22:02:30.215876
+5	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:03:35.558058	2018-05-27 22:03:35.558058
+6	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:03:47.909059	2018-05-27 22:03:47.909059
+7	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:08:14.064233	2018-05-27 22:08:14.064233
+8	https://www.youtube.com/watch?v=BmJ4QSR5SMo&t=338s	\N	\N	\N	\N	2018-05-27 22:09:19.719671	2018-05-27 22:09:19.719671
+\.
+
+
+--
+-- Data for Name: smart_tv_users; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.smart_tv_users (id, user_tv, password_tv, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: sponsor_stores; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.sponsor_stores (id, store_id, smart_tv_sponsor_id, created_at, updated_at) FROM stdin;
+1	9	7	2018-05-27 22:08:14.084429	2018-05-27 22:08:14.084429
+2	9	8	2018-05-27 22:09:19.739569	2018-05-27 22:09:19.739569
+\.
+
+
+--
+-- Data for Name: store_categories; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.store_categories (id, name, description, created_at, updated_at, icon_file_name, icon_content_type, icon_file_size, icon_updated_at) FROM stdin;
+1	deportes	categoria description test	2018-04-16 21:54:57.659887	2018-04-16 21:54:57.659887	\N	\N	\N	\N
+2	ropa	categoria de ropa	2018-04-20 00:55:59.276474	2018-04-20 00:55:59.276474	\N	\N	\N	\N
+3	test	\N	2018-04-20 21:24:37.732072	2018-04-20 21:24:37.732072	\N	\N	\N	\N
+4	test	test desc	2018-04-26 05:44:33.870943	2018-04-26 05:44:33.870943	\N	\N	\N	\N
+6	\N	\N	2018-05-22 01:57:16.93608	2018-05-22 01:57:16.93608	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: store_events; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.store_events (id, store_id, event_id, banner_file_name, banner_content_type, banner_file_size, banner_updated_at, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: store_store_categories; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.store_store_categories (id, store_id, store_category_id, created_at, updated_at) FROM stdin;
+2	2	2	2018-04-20 00:56:19.501326	2018-04-20 00:56:19.501326
+3	12	4	2018-05-22 00:47:57.636099	2018-05-22 00:47:57.636099
+4	12	4	2018-05-22 00:49:54.042145	2018-05-22 00:49:54.042145
+5	12	1	2018-05-22 00:51:03.918857	2018-05-22 00:51:03.918857
+6	12	2	2018-05-22 00:51:03.920883	2018-05-22 00:51:03.920883
+7	13	1	2018-05-22 00:53:08.398279	2018-05-22 00:53:08.398279
+8	13	2	2018-05-22 00:53:08.400406	2018-05-22 00:53:08.400406
+9	13	3	2018-05-22 00:53:08.402186	2018-05-22 00:53:08.402186
+13	14	6	2018-05-22 01:57:50.524002	2018-05-22 01:57:50.524002
+\.
+
+
+--
+-- Data for Name: stores; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.stores (id, name, description, webpage, contact_name, phone_number, created_at, updated_at, logo_file_name, logo_content_type, logo_file_size, logo_updated_at, banner_file_name, banner_content_type, banner_file_size, banner_updated_at) FROM stdin;
+2	tienda 2	\N	\N	\N	\N	2018-04-17 00:46:13.683393	2018-04-17 00:46:13.683393	\N	\N	\N	\N	\N	\N	\N	\N
+3	test	\N	\N	\N	\N	2018-04-20 21:29:56.73757	2018-04-20 21:29:56.73757	\N	\N	\N	\N	\N	\N	\N	\N
+4	tienda con logo	\N	\N	\N	\N	2018-04-20 21:37:27.265939	2018-04-20 21:37:27.265939	\N	\N	\N	\N	\N	\N	\N	\N
+5	tienda con logo	\N	\N	\N	\N	2018-04-20 21:37:31.516224	2018-04-20 21:37:31.516224	\N	\N	\N	\N	\N	\N	\N	\N
+6	tienda con logo	\N	\N	\N	\N	2018-04-20 21:37:39.809513	2018-04-20 21:37:39.809513	2c197e8ad97e93f21de28a44bd01fe2b.jpg	image/jpeg	30241	2018-04-20 21:37:39.404784	\N	\N	\N	\N
+7	tienda con logo	\N	\N	\N	\N	2018-04-26 17:40:17.978761	2018-04-26 17:40:17.978761	\N	\N	\N	\N	\N	\N	\N	\N
+8	Rosatel4	\N	\N	\N	\N	2018-04-27 01:10:47.377521	2018-04-27 01:10:47.377521	rosatel_20160217212343_list.jpg	image/jpeg	36540	2018-04-27 01:10:46.973082	\N	\N	\N	\N
+9	\N	\N	\N	\N	\N	2018-05-16 17:39:37.085279	2018-05-16 17:39:37.085279	\N	\N	\N	\N	\N	\N	\N	\N
+10	Rosatel4	test	\N	\N	\N	2018-05-17 05:44:22.269154	2018-05-17 05:44:22.269154	\N	\N	\N	\N	\N	\N	\N	\N
+11	Rosatel4	test	\N	\N	\N	2018-05-17 05:44:48.39471	2018-05-17 05:44:48.39471	\N	\N	\N	\N	\N	\N	\N	\N
+12	Rosatel4	test	\N	\N	\N	2018-05-17 05:52:13.744178	2018-05-17 05:52:13.744178	\N	\N	\N	\N	\N	\N	\N	\N
+13	tienda1	este es una prueba	http:www.test.com	contac test	\N	2018-05-22 00:53:08.354608	2018-05-22 00:53:08.354608	\N	\N	\N	\N	\N	\N	\N	\N
+14	tienda1	este es una prueba	http:www.test.com	contac test	\N	2018-05-22 00:57:25.801611	2018-05-22 00:57:25.801611	\N	\N	\N	\N	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: technical_specifications; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.technical_specifications (id, description, weight, length, height, brand, product_id, created_at, updated_at) FROM stdin;
+1	test desc	1	1	1	\N	1	2018-05-18 02:48:22.82644	2018-05-18 02:48:22.82644
+2	test desc	1	1	1	\N	2	2018-05-18 02:50:15.355328	2018-05-18 02:50:15.355328
+3	test desc	1	1	1	\N	3	2018-05-18 02:51:28.497794	2018-05-18 02:51:28.497794
+\.
+
+
+--
+-- Data for Name: user_places; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.user_places (id, user_id, parking_place_id, parking_level_id, parking_lot_id, start_time) FROM stdin;
+\.
+
+
+--
+-- Data for Name: user_sponsors; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.user_sponsors (id, smart_tv_user_id, smart_tv_sponsor_id, event_date, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: gustavogalarreta
+--
+
+COPY public.users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, first_name, last_name, date_of_birth, phone_number, avatar_file_name, avatar_content_type, avatar_file_size, avatar_updated_at) FROM stdin;
+2	test.test@pucp.pe	$2a$11$oT7q6BGjns7iqdLZys1i9eISngu23pb5Wz4EWqVu/faN6FmI3D0mG	\N	\N	\N	0	\N	\N	\N	\N	2018-04-16 19:20:26.511857	2018-05-18 16:26:23.055829	\N	\N	\N	\N	\N	\N	\N	\N
+1	gustavo.galarreta@pucp.pe	$2a$11$3ZGVhXj3heAcnsLk4PNjN.QKiG.3lrDrcTBEKbnRdIp89O0EWCFT2	\N	\N	\N	0	\N	\N	\N	\N	2018-04-16 18:29:46.96332	2018-05-18 17:24:59.24633	gustavo	galarreta	1994-07-05	3490081	\N	\N	\N	\N
+\.
+
+
+--
+-- Name: background_colors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.background_colors_id_seq', 7, true);
+
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.brands_id_seq', 2, true);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.events_id_seq', 3, true);
+
+
+--
+-- Name: favorite_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.favorite_products_id_seq', 1, false);
+
+
+--
+-- Name: favorite_stores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.favorite_stores_id_seq', 1, false);
+
+
+--
+-- Name: incidents_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.incidents_id_seq', 1, false);
+
+
+--
+-- Name: mall_beacons_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_beacons_id_seq', 1, false);
+
+
+--
+-- Name: mall_elements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_elements_id_seq', 1, false);
+
+
+--
+-- Name: mall_elevation_paths_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_elevation_paths_id_seq', 1, false);
+
+
+--
+-- Name: mall_elevations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_elevations_id_seq', 1, false);
+
+
+--
+-- Name: mall_levels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_levels_id_seq', 1, false);
+
+
+--
+-- Name: mall_node_paths_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_node_paths_id_seq', 1, false);
+
+
+--
+-- Name: mall_nodes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.mall_nodes_id_seq', 1, false);
+
+
+--
+-- Name: map_labels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.map_labels_id_seq', 1, false);
+
+
+--
+-- Name: maps_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.maps_id_seq', 1, false);
+
+
+--
+-- Name: park_zone_reservations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.park_zone_reservations_id_seq', 1, false);
+
+
+--
+-- Name: park_zones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.park_zones_id_seq', 1, true);
+
+
+--
+-- Name: parking_levels_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.parking_levels_id_seq', 1, true);
+
+
+--
+-- Name: parking_lots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.parking_lots_id_seq', 2, true);
+
+
+--
+-- Name: parking_place_updates_sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.parking_place_updates_sessions_id_seq', 1, false);
+
+
+--
+-- Name: parking_places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.parking_places_id_seq', 1, false);
+
+
+--
+-- Name: parking_places_road_dots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.parking_places_road_dots_id_seq', 1, false);
+
+
+--
+-- Name: preference_store_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.preference_store_categories_id_seq', 1, false);
+
+
+--
+-- Name: price_units_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.price_units_id_seq', 2, true);
+
+
+--
+-- Name: product_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.product_categories_id_seq', 1, true);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 3, true);
+
+
+--
+-- Name: promotions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.promotions_id_seq', 3, true);
+
+
+--
+-- Name: road_dot_connections_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.road_dot_connections_id_seq', 1, false);
+
+
+--
+-- Name: road_dots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.road_dots_id_seq', 1, false);
+
+
+--
+-- Name: roads_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.roads_id_seq', 1, false);
+
+
+--
+-- Name: roulettes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.roulettes_id_seq', 1, true);
+
+
+--
+-- Name: sensor_maintenances_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.sensor_maintenances_id_seq', 1, false);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.sessions_id_seq', 8, true);
+
+
+--
+-- Name: smart_tv_sponsors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.smart_tv_sponsors_id_seq', 8, true);
+
+
+--
+-- Name: smart_tv_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.smart_tv_users_id_seq', 1, false);
+
+
+--
+-- Name: sponsor_stores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.sponsor_stores_id_seq', 2, true);
+
+
+--
+-- Name: store_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.store_categories_id_seq', 6, true);
+
+
+--
+-- Name: store_events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.store_events_id_seq', 1, false);
+
+
+--
+-- Name: store_store_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.store_store_categories_id_seq', 13, true);
+
+
+--
+-- Name: stores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.stores_id_seq', 14, true);
+
+
+--
+-- Name: technical_specifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.technical_specifications_id_seq', 3, true);
+
+
+--
+-- Name: user_places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.user_places_id_seq', 1, false);
+
+
+--
+-- Name: user_sponsors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.user_sponsors_id_seq', 1, false);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gustavogalarreta
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 2, true);
+
+
+--
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: background_colors background_colors_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.background_colors
+    ADD CONSTRAINT background_colors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: brands brands_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorite_products favorite_products_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.favorite_products
+    ADD CONSTRAINT favorite_products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: favorite_stores favorite_stores_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.favorite_stores
+    ADD CONSTRAINT favorite_stores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: incidents incidents_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT incidents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_beacons mall_beacons_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_beacons
+    ADD CONSTRAINT mall_beacons_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_elements mall_elements_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elements
+    ADD CONSTRAINT mall_elements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_elevation_paths mall_elevation_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevation_paths
+    ADD CONSTRAINT mall_elevation_paths_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_elevations mall_elevations_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevations
+    ADD CONSTRAINT mall_elevations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_levels mall_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_levels
+    ADD CONSTRAINT mall_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_node_paths mall_node_paths_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_node_paths
+    ADD CONSTRAINT mall_node_paths_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mall_nodes mall_nodes_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_nodes
+    ADD CONSTRAINT mall_nodes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: map_labels map_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.map_labels
+    ADD CONSTRAINT map_labels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: maps maps_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.maps
+    ADD CONSTRAINT maps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: park_zone_reservations park_zone_reservations_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zone_reservations
+    ADD CONSTRAINT park_zone_reservations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: park_zones park_zones_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zones
+    ADD CONSTRAINT park_zones_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_levels parking_levels_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_levels
+    ADD CONSTRAINT parking_levels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_lots parking_lots_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_lots
+    ADD CONSTRAINT parking_lots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_place_updates_sessions parking_place_updates_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT parking_place_updates_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_places parking_places_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places
+    ADD CONSTRAINT parking_places_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: parking_places_road_dots parking_places_road_dots_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT parking_places_road_dots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: preference_store_categories preference_store_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.preference_store_categories
+    ADD CONSTRAINT preference_store_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: price_units price_units_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.price_units
+    ADD CONSTRAINT price_units_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_categories product_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.product_categories
+    ADD CONSTRAINT product_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: promotions promotions_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.promotions
+    ADD CONSTRAINT promotions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: road_dot_connections road_dot_connections_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dot_connections
+    ADD CONSTRAINT road_dot_connections_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: road_dots road_dots_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dots
+    ADD CONSTRAINT road_dots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roads roads_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.roads
+    ADD CONSTRAINT roads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roulettes roulettes_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.roulettes
+    ADD CONSTRAINT roulettes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sensor_maintenances sensor_maintenances_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sensor_maintenances
+    ADD CONSTRAINT sensor_maintenances_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: smart_tv_sponsors smart_tv_sponsors_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.smart_tv_sponsors
+    ADD CONSTRAINT smart_tv_sponsors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: smart_tv_users smart_tv_users_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.smart_tv_users
+    ADD CONSTRAINT smart_tv_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sponsor_stores sponsor_stores_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sponsor_stores
+    ADD CONSTRAINT sponsor_stores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_categories store_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_categories
+    ADD CONSTRAINT store_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_events store_events_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_events
+    ADD CONSTRAINT store_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: store_store_categories store_store_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.store_store_categories
+    ADD CONSTRAINT store_store_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: stores stores_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.stores
+    ADD CONSTRAINT stores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: technical_specifications technical_specifications_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.technical_specifications
+    ADD CONSTRAINT technical_specifications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_places user_places_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places
+    ADD CONSTRAINT user_places_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_sponsors user_sponsors_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_sponsors
+    ADD CONSTRAINT user_sponsors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_background_colors_on_smart_tv_sponsor_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_background_colors_on_smart_tv_sponsor_id ON public.background_colors USING btree (smart_tv_sponsor_id);
+
+
+--
+-- Name: index_favorite_products_on_product_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_favorite_products_on_product_id ON public.favorite_products USING btree (product_id);
+
+
+--
+-- Name: index_favorite_products_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_favorite_products_on_user_id ON public.favorite_products USING btree (user_id);
+
+
+--
+-- Name: index_favorite_stores_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_favorite_stores_on_store_id ON public.favorite_stores USING btree (store_id);
+
+
+--
+-- Name: index_favorite_stores_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_favorite_stores_on_user_id ON public.favorite_stores USING btree (user_id);
+
+
+--
+-- Name: index_incidents_on_mall_element_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_incidents_on_mall_element_id ON public.incidents USING btree (mall_element_id);
+
+
+--
+-- Name: index_incidents_on_mall_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_incidents_on_mall_level_id ON public.incidents USING btree (mall_level_id);
+
+
+--
+-- Name: index_incidents_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_incidents_on_map_id ON public.incidents USING btree (map_id);
+
+
+--
+-- Name: index_incidents_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_incidents_on_user_id ON public.incidents USING btree (user_id);
+
+
+--
+-- Name: index_mall_beacons_on_mall_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_beacons_on_mall_level_id ON public.mall_beacons USING btree (mall_level_id);
+
+
+--
+-- Name: index_mall_beacons_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_beacons_on_map_id ON public.mall_beacons USING btree (map_id);
+
+
+--
+-- Name: index_mall_elements_on_mall_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elements_on_mall_level_id ON public.mall_elements USING btree (mall_level_id);
+
+
+--
+-- Name: index_mall_elements_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elements_on_map_id ON public.mall_elements USING btree (map_id);
+
+
+--
+-- Name: index_mall_elements_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elements_on_store_id ON public.mall_elements USING btree (store_id);
+
+
+--
+-- Name: index_mall_elevation_paths_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elevation_paths_on_map_id ON public.mall_elevation_paths USING btree (map_id);
+
+
+--
+-- Name: index_mall_elevations_on_mall_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elevations_on_mall_level_id ON public.mall_elevations USING btree (mall_level_id);
+
+
+--
+-- Name: index_mall_elevations_on_mall_node_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elevations_on_mall_node_id ON public.mall_elevations USING btree (mall_node_id);
+
+
+--
+-- Name: index_mall_elevations_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_elevations_on_map_id ON public.mall_elevations USING btree (map_id);
+
+
+--
+-- Name: index_mall_levels_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_levels_on_map_id ON public.mall_levels USING btree (map_id);
+
+
+--
+-- Name: index_mall_node_paths_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_node_paths_on_map_id ON public.mall_node_paths USING btree (map_id);
+
+
+--
+-- Name: index_mall_nodes_on_mall_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_nodes_on_mall_level_id ON public.mall_nodes USING btree (mall_level_id);
+
+
+--
+-- Name: index_mall_nodes_on_map_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_mall_nodes_on_map_id ON public.mall_nodes USING btree (map_id);
+
+
+--
+-- Name: index_map_labels_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_map_labels_on_parking_level_id ON public.map_labels USING btree (parking_level_id);
+
+
+--
+-- Name: index_map_labels_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_map_labels_on_parking_lot_id ON public.map_labels USING btree (parking_lot_id);
+
+
+--
+-- Name: index_park_zone_reservations_on_park_zone_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_park_zone_reservations_on_park_zone_id ON public.park_zone_reservations USING btree (park_zone_id);
+
+
+--
+-- Name: index_park_zone_reservations_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_park_zone_reservations_on_user_id ON public.park_zone_reservations USING btree (user_id);
+
+
+--
+-- Name: index_park_zones_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_park_zones_on_parking_level_id ON public.park_zones USING btree (parking_level_id);
+
+
+--
+-- Name: index_parking_levels_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_levels_on_parking_lot_id ON public.parking_levels USING btree (parking_lot_id);
+
+
+--
+-- Name: index_parking_place_updates_sessions_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_place_updates_sessions_on_parking_level_id ON public.parking_place_updates_sessions USING btree (parking_level_id);
+
+
+--
+-- Name: index_parking_place_updates_sessions_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_place_updates_sessions_on_parking_lot_id ON public.parking_place_updates_sessions USING btree (parking_lot_id);
+
+
+--
+-- Name: index_parking_place_updates_sessions_on_parking_place_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_place_updates_sessions_on_parking_place_id ON public.parking_place_updates_sessions USING btree (parking_place_id);
+
+
+--
+-- Name: index_parking_place_updates_sessions_on_session_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_place_updates_sessions_on_session_id ON public.parking_place_updates_sessions USING btree (session_id);
+
+
+--
+-- Name: index_parking_place_updates_sessions_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_place_updates_sessions_on_user_id ON public.parking_place_updates_sessions USING btree (user_id);
+
+
+--
+-- Name: index_parking_places_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_on_parking_level_id ON public.parking_places USING btree (parking_level_id);
+
+
+--
+-- Name: index_parking_places_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_on_parking_lot_id ON public.parking_places USING btree (parking_lot_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_parking_level_id ON public.parking_places_road_dots USING btree (parking_level_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_parking_lot_id ON public.parking_places_road_dots USING btree (parking_lot_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_parking_place_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_parking_place_id ON public.parking_places_road_dots USING btree (parking_place_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_road_dot_connection_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_road_dot_connection_id ON public.parking_places_road_dots USING btree (road_dot_connection_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_road_dot_from_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_road_dot_from_id ON public.parking_places_road_dots USING btree (road_dot_from_id);
+
+
+--
+-- Name: index_parking_places_road_dots_on_road_dot_to_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_parking_places_road_dots_on_road_dot_to_id ON public.parking_places_road_dots USING btree (road_dot_to_id);
+
+
+--
+-- Name: index_preference_store_categories_on_store_category_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_preference_store_categories_on_store_category_id ON public.preference_store_categories USING btree (store_category_id);
+
+
+--
+-- Name: index_preference_store_categories_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_preference_store_categories_on_user_id ON public.preference_store_categories USING btree (user_id);
+
+
+--
+-- Name: index_products_on_brand_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_products_on_brand_id ON public.products USING btree (brand_id);
+
+
+--
+-- Name: index_products_on_product_category_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_products_on_product_category_id ON public.products USING btree (product_category_id);
+
+
+--
+-- Name: index_products_on_promotion_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_products_on_promotion_id ON public.products USING btree (promotion_id);
+
+
+--
+-- Name: index_products_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_products_on_store_id ON public.products USING btree (store_id);
+
+
+--
+-- Name: index_promotions_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_promotions_on_store_id ON public.promotions USING btree (store_id);
+
+
+--
+-- Name: index_road_dot_connections_on_road_dot_from_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_road_dot_connections_on_road_dot_from_id ON public.road_dot_connections USING btree (road_dot_from_id);
+
+
+--
+-- Name: index_road_dot_connections_on_road_dot_to_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_road_dot_connections_on_road_dot_to_id ON public.road_dot_connections USING btree (road_dot_to_id);
+
+
+--
+-- Name: index_road_dots_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_road_dots_on_parking_level_id ON public.road_dots USING btree (parking_level_id);
+
+
+--
+-- Name: index_road_dots_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_road_dots_on_parking_lot_id ON public.road_dots USING btree (parking_lot_id);
+
+
+--
+-- Name: index_roads_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_roads_on_parking_level_id ON public.roads USING btree (parking_level_id);
+
+
+--
+-- Name: index_roads_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_roads_on_parking_lot_id ON public.roads USING btree (parking_lot_id);
+
+
+--
+-- Name: index_roulettes_on_smart_tv_sponsor_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_roulettes_on_smart_tv_sponsor_id ON public.roulettes USING btree (smart_tv_sponsor_id);
+
+
+--
+-- Name: index_roulettes_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_roulettes_on_user_id ON public.roulettes USING btree (user_id);
+
+
+--
+-- Name: index_sensor_maintenances_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sensor_maintenances_on_parking_level_id ON public.sensor_maintenances USING btree (parking_level_id);
+
+
+--
+-- Name: index_sensor_maintenances_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sensor_maintenances_on_parking_lot_id ON public.sensor_maintenances USING btree (parking_lot_id);
+
+
+--
+-- Name: index_sensor_maintenances_on_parking_place_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sensor_maintenances_on_parking_place_id ON public.sensor_maintenances USING btree (parking_place_id);
+
+
+--
+-- Name: index_sessions_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sessions_on_user_id ON public.sessions USING btree (user_id);
+
+
+--
+-- Name: index_sponsor_stores_on_smart_tv_sponsor_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sponsor_stores_on_smart_tv_sponsor_id ON public.sponsor_stores USING btree (smart_tv_sponsor_id);
+
+
+--
+-- Name: index_sponsor_stores_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_sponsor_stores_on_store_id ON public.sponsor_stores USING btree (store_id);
+
+
+--
+-- Name: index_store_events_on_event_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_store_events_on_event_id ON public.store_events USING btree (event_id);
+
+
+--
+-- Name: index_store_events_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_store_events_on_store_id ON public.store_events USING btree (store_id);
+
+
+--
+-- Name: index_store_store_categories_on_store_category_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_store_store_categories_on_store_category_id ON public.store_store_categories USING btree (store_category_id);
+
+
+--
+-- Name: index_store_store_categories_on_store_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_store_store_categories_on_store_id ON public.store_store_categories USING btree (store_id);
+
+
+--
+-- Name: index_technical_specifications_on_product_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_technical_specifications_on_product_id ON public.technical_specifications USING btree (product_id);
+
+
+--
+-- Name: index_user_places_on_parking_level_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_places_on_parking_level_id ON public.user_places USING btree (parking_level_id);
+
+
+--
+-- Name: index_user_places_on_parking_lot_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_places_on_parking_lot_id ON public.user_places USING btree (parking_lot_id);
+
+
+--
+-- Name: index_user_places_on_parking_place_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_places_on_parking_place_id ON public.user_places USING btree (parking_place_id);
+
+
+--
+-- Name: index_user_places_on_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_places_on_user_id ON public.user_places USING btree (user_id);
+
+
+--
+-- Name: index_user_sponsors_on_smart_tv_sponsor_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_sponsors_on_smart_tv_sponsor_id ON public.user_sponsors USING btree (smart_tv_sponsor_id);
+
+
+--
+-- Name: index_user_sponsors_on_smart_tv_user_id; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE INDEX index_user_sponsors_on_smart_tv_user_id ON public.user_sponsors USING btree (smart_tv_user_id);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: gustavogalarreta
+--
+
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: incidents fk_rails_0002d85c33; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT fk_rails_0002d85c33 FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: map_labels fk_rails_04e1dbcf88; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.map_labels
+    ADD CONSTRAINT fk_rails_04e1dbcf88 FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: parking_place_updates_sessions fk_rails_050fbc74d7; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT fk_rails_050fbc74d7 FOREIGN KEY (parking_place_id) REFERENCES public.parking_places(id);
+
+
+--
+-- Name: mall_elements fk_rails_06d81e1a18; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elements
+    ADD CONSTRAINT fk_rails_06d81e1a18 FOREIGN KEY (store_id) REFERENCES public.stores(id);
+
+
+--
+-- Name: mall_elevations fk_rails_13dcf415f4; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevations
+    ADD CONSTRAINT fk_rails_13dcf415f4 FOREIGN KEY (mall_level_id) REFERENCES public.mall_levels(id);
+
+
+--
+-- Name: parking_place_updates_sessions fk_rails_202fb6795d; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT fk_rails_202fb6795d FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: user_places fk_rails_21f05d4485; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places
+    ADD CONSTRAINT fk_rails_21f05d4485 FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: mall_beacons fk_rails_24ea71bef4; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_beacons
+    ADD CONSTRAINT fk_rails_24ea71bef4 FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: road_dot_connections fk_rails_27b576a4c5; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dot_connections
+    ADD CONSTRAINT fk_rails_27b576a4c5 FOREIGN KEY (road_dot_to_id) REFERENCES public.road_dots(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_3254df2359; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_3254df2359 FOREIGN KEY (parking_place_id) REFERENCES public.parking_places(id);
+
+
+--
+-- Name: mall_levels fk_rails_3617892bc8; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_levels
+    ADD CONSTRAINT fk_rails_3617892bc8 FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: road_dots fk_rails_3abd3fe46d; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dots
+    ADD CONSTRAINT fk_rails_3abd3fe46d FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: parking_place_updates_sessions fk_rails_3b68b4bc5a; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT fk_rails_3b68b4bc5a FOREIGN KEY (session_id) REFERENCES public.sessions(id);
+
+
+--
+-- Name: mall_elevation_paths fk_rails_4fb5ec317d; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevation_paths
+    ADD CONSTRAINT fk_rails_4fb5ec317d FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: mall_elements fk_rails_501a13f619; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elements
+    ADD CONSTRAINT fk_rails_501a13f619 FOREIGN KEY (mall_level_id) REFERENCES public.mall_levels(id);
+
+
+--
+-- Name: sensor_maintenances fk_rails_5168686e70; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sensor_maintenances
+    ADD CONSTRAINT fk_rails_5168686e70 FOREIGN KEY (parking_place_id) REFERENCES public.parking_places(id);
+
+
+--
+-- Name: incidents fk_rails_5bb51d8d51; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT fk_rails_5bb51d8d51 FOREIGN KEY (mall_level_id) REFERENCES public.mall_levels(id);
+
+
+--
+-- Name: incidents fk_rails_5c3ae4ad86; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT fk_rails_5c3ae4ad86 FOREIGN KEY (mall_element_id) REFERENCES public.mall_elements(id);
+
+
+--
+-- Name: user_places fk_rails_6439211bc8; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places
+    ADD CONSTRAINT fk_rails_6439211bc8 FOREIGN KEY (parking_place_id) REFERENCES public.parking_places(id);
+
+
+--
+-- Name: incidents fk_rails_6af30a70d3; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT fk_rails_6af30a70d3 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_7c705685c8; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_7c705685c8 FOREIGN KEY (road_dot_from_id) REFERENCES public.road_dots(id);
+
+
+--
+-- Name: park_zone_reservations fk_rails_7c9463b366; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zone_reservations
+    ADD CONSTRAINT fk_rails_7c9463b366 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: sensor_maintenances fk_rails_7d695cb0ba; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sensor_maintenances
+    ADD CONSTRAINT fk_rails_7d695cb0ba FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: parking_levels fk_rails_7dc623d1a4; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_levels
+    ADD CONSTRAINT fk_rails_7dc623d1a4 FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: road_dots fk_rails_7e26c2ea1f; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dots
+    ADD CONSTRAINT fk_rails_7e26c2ea1f FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: user_places fk_rails_8071a77426; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places
+    ADD CONSTRAINT fk_rails_8071a77426 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: map_labels fk_rails_81133ad83c; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.map_labels
+    ADD CONSTRAINT fk_rails_81133ad83c FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_90629c6232; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_90629c6232 FOREIGN KEY (road_dot_connection_id) REFERENCES public.road_dot_connections(id);
+
+
+--
+-- Name: mall_node_paths fk_rails_93e25f2c3a; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_node_paths
+    ADD CONSTRAINT fk_rails_93e25f2c3a FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: mall_elevations fk_rails_97fbe99825; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevations
+    ADD CONSTRAINT fk_rails_97fbe99825 FOREIGN KEY (mall_node_id) REFERENCES public.mall_nodes(id);
+
+
+--
+-- Name: parking_places fk_rails_983f938c21; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places
+    ADD CONSTRAINT fk_rails_983f938c21 FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: sensor_maintenances fk_rails_98ae5dbf45; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.sensor_maintenances
+    ADD CONSTRAINT fk_rails_98ae5dbf45 FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: road_dot_connections fk_rails_9c4e562639; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.road_dot_connections
+    ADD CONSTRAINT fk_rails_9c4e562639 FOREIGN KEY (road_dot_from_id) REFERENCES public.road_dots(id);
+
+
+--
+-- Name: mall_nodes fk_rails_9e656ede4d; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_nodes
+    ADD CONSTRAINT fk_rails_9e656ede4d FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: parking_places fk_rails_9fcdbcf477; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places
+    ADD CONSTRAINT fk_rails_9fcdbcf477 FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: park_zone_reservations fk_rails_a3d2b9e6ca; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zone_reservations
+    ADD CONSTRAINT fk_rails_a3d2b9e6ca FOREIGN KEY (park_zone_id) REFERENCES public.park_zones(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_ae21b22e2c; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_ae21b22e2c FOREIGN KEY (road_dot_to_id) REFERENCES public.road_dots(id);
+
+
+--
+-- Name: parking_place_updates_sessions fk_rails_b7d14458af; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT fk_rails_b7d14458af FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: user_places fk_rails_ba19039018; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.user_places
+    ADD CONSTRAINT fk_rails_ba19039018 FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: mall_elements fk_rails_bd2e3ceb41; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elements
+    ADD CONSTRAINT fk_rails_bd2e3ceb41 FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: mall_nodes fk_rails_ce33e3af92; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_nodes
+    ADD CONSTRAINT fk_rails_ce33e3af92 FOREIGN KEY (mall_level_id) REFERENCES public.mall_levels(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_d17202d34e; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_d17202d34e FOREIGN KEY (parking_lot_id) REFERENCES public.parking_lots(id);
+
+
+--
+-- Name: parking_places_road_dots fk_rails_d49c1cb96d; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_places_road_dots
+    ADD CONSTRAINT fk_rails_d49c1cb96d FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: mall_elevations fk_rails_d7f1a66c8a; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_elevations
+    ADD CONSTRAINT fk_rails_d7f1a66c8a FOREIGN KEY (map_id) REFERENCES public.maps(id);
+
+
+--
+-- Name: parking_place_updates_sessions fk_rails_dee2c77dd1; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.parking_place_updates_sessions
+    ADD CONSTRAINT fk_rails_dee2c77dd1 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: park_zones fk_rails_e093344b3c; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.park_zones
+    ADD CONSTRAINT fk_rails_e093344b3c FOREIGN KEY (parking_level_id) REFERENCES public.parking_levels(id);
+
+
+--
+-- Name: mall_beacons fk_rails_fbbdf9333e; Type: FK CONSTRAINT; Schema: public; Owner: gustavogalarreta
+--
+
+ALTER TABLE ONLY public.mall_beacons
+    ADD CONSTRAINT fk_rails_fbbdf9333e FOREIGN KEY (mall_level_id) REFERENCES public.mall_levels(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

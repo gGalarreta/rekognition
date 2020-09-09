@@ -1,0 +1,15 @@
+current directory: /Users/gustavogalarreta/Projects/plaza-app/vendor/cache/ruby/2.5.0/gems/bootsnap-1.3.0/ext/bootsnap
+/Users/gustavogalarreta/.rvm/rubies/ruby-2.5.0/bin/ruby -r ./siteconf20180420-27913-o7vzme.rb extconf.rb
+creating Makefile
+
+current directory: /Users/gustavogalarreta/Projects/plaza-app/vendor/cache/ruby/2.5.0/gems/bootsnap-1.3.0/ext/bootsnap
+make "DESTDIR=" clean
+
+current directory: /Users/gustavogalarreta/Projects/plaza-app/vendor/cache/ruby/2.5.0/gems/bootsnap-1.3.0/ext/bootsnap
+make "DESTDIR="
+compiling bootsnap.c
+linking shared-object bootsnap/bootsnap.bundle
+
+current directory: /Users/gustavogalarreta/Projects/plaza-app/vendor/cache/ruby/2.5.0/gems/bootsnap-1.3.0/ext/bootsnap
+make "DESTDIR=" install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 bootsnap.bundle ./.gem.20180420-27913-c4zlvz/bootsnap

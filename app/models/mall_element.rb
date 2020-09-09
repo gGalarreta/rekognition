@@ -1,0 +1,2 @@
+class MallElement < ApplicationRecord
+end

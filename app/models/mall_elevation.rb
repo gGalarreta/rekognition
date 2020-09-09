@@ -1,0 +1,2 @@
+class MallElevation < ApplicationRecord
+end

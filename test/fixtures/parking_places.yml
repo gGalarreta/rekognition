@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parking_level: one
+  parking_lot: one
+  x_coord: 1
+  y_coord: 1
+  position: false
+  park_zone: one
+
+two:
+  parking_level: two
+  parking_lot: two
+  x_coord: 1
+  y_coord: 1
+  position: false
+  park_zone: two

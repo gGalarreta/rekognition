@@ -1,0 +1,2 @@
+class MallElevationPath < ApplicationRecord
+end

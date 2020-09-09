@@ -1,0 +1,2 @@
+class ParkZoneReservation < ApplicationRecord
+end

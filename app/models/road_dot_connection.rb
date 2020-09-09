@@ -1,0 +1,2 @@
+class RoadDotConnection < ApplicationRecord
+end

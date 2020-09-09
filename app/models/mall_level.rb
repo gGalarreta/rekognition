@@ -1,0 +1,2 @@
+class MallLevel < ApplicationRecord
+end

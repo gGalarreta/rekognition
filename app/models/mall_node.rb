@@ -1,0 +1,2 @@
+class MallNode < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class ParkingPlacesRoadDot < ApplicationRecord
+end
